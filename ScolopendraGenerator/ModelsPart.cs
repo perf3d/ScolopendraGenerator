@@ -69,7 +69,7 @@ public class ModelsPart : IEnumerable
             if (startFlag)
             {
                 minX = coord.X;
-                minX = coord.X;
+                maxX = coord.X;
             }
             else
             {
