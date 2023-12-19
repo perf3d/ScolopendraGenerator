@@ -1,4 +1,13 @@
-﻿using static System.Console;
+﻿using System;
+using static System.Console;
 
 
-namespace scolopendra;
+GenerateScolopendra();
+
+
+static void GenerateScolopendra()
+{
+    ModelsPart head = new("Parts/Head.stl");
+    ModelsPart mid = new("Parts/Midle.stl");
+    ModelsPart back = new("Parts/Tail.stl");
+}
