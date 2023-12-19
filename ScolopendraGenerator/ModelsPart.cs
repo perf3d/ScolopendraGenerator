@@ -115,7 +115,7 @@ class CoordsEnumerator : IEnumerator<Coords>
         }
         info = new FileInfo(path);
     }
-    Coords IEnumerator<Coords>.Current
+    object System.Collections.IEnumerator.Current
     {
         get{
             Coords coords = new Coords();
@@ -137,7 +137,7 @@ class CoordsEnumerator : IEnumerator<Coords>
         }
     }
 
-    object System.Collections.IEnumerator.Current => throw new NotImplementedException();
+    //object System.Collections.IEnumerator.Current => throw new NotImplementedException();
 
     bool System.Collections.IEnumerator.MoveNext()
     {
