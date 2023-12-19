@@ -1,12 +1,11 @@
 ﻿//using SixLabors.ImageSharp.Drawing;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using static System.Console;
 
-public class ModelsPart : IEnumerable<Coords>
+public class ModelsPart : IEnumerable
 {
     private string? pathToModel = null;
     private uint? trisCount = null;
@@ -18,7 +17,6 @@ public class ModelsPart : IEnumerable<Coords>
         lengthX = getLengthX();
         WriteLine($"{PathToModel} contain {TrisCount} tris and have length {lengthX:N2} units(mm?)");
     }
-
     public string? PathToModel
     {
         get
@@ -40,7 +38,6 @@ public class ModelsPart : IEnumerable<Coords>
             return lengthX;
         }
     }
-
     private uint getTrisCount(string path)
     {
         uint trisCount = 0;
@@ -61,15 +58,8 @@ public class ModelsPart : IEnumerable<Coords>
             throw new Exception("invalid path");
         }
     }
-
     private float getLengthX()
     {
-        //First method _____>
-        //float maxHead = this.Max(x => x.X);
-        //float minHead = this.Min(x => x.X);
-        //return(float) (maxHead - minHead);
-
-        //Second method(~50% faster) _____>
         bool startFlag = false;
         float minX = 0;
         float maxX = 0;
@@ -94,14 +84,9 @@ public class ModelsPart : IEnumerable<Coords>
         }
         return (maxX - minX);
     }
-
-    IEnumerator<Coords> IEnumerable<Coords>.GetEnumerator() => new CoordsEnumerator(pathToModel);
-
     IEnumerator IEnumerable.GetEnumerator() => new CoordsEnumerator(pathToModel);
-
 }
-
-class CoordsEnumerator : IEnumerator<Coords>
+class CoordsEnumerator : IEnumerator
 {
     static int startPosition = 70;
     FileInfo info;
@@ -136,10 +121,7 @@ class CoordsEnumerator : IEnumerator<Coords>
             return coords;
         }
     }
-
-    //object System.Collections.IEnumerator.Current => throw new NotImplementedException();
-
-    bool System.Collections.IEnumerator.MoveNext()
+    bool IEnumerator.MoveNext()
     {
         int increment=0;
         switch (jumpCounter)
@@ -157,27 +139,21 @@ class CoordsEnumerator : IEnumerator<Coords>
                 jumpCounter = 1;
                 break;
         }
-        
-
         if ((position + increment) <= info.Length)
         {
             position += increment;
             return true;
         }
         else
+        {
             return false;
+        } 
     }
 
-    void System.Collections.IEnumerator.Reset()
+    void IEnumerator.Reset()
     {
         position = startPosition; //80 + 4 + 12 - 26;
     }
-
-    void IDisposable.Dispose()
-    {
-        //throw new NotImplementedException();
-    }
-
 }
 
 struct Coords
