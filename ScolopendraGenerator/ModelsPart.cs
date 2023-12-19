@@ -10,6 +10,7 @@ public class ModelsPart : IEnumerable
     private string? pathToModel = null;
     private uint? trisCount = null;
     private float? lengthX = null;
+    private float? toZeroXCoeff = null;
     public ModelsPart(string path)
     {
         pathToModel = path;
@@ -82,6 +83,8 @@ public class ModelsPart : IEnumerable
                 }
             }
         }
+        float centerX = minX + ((maxX - minX) / 2);
+        toZeroXCoeff = 0 - centerX;
         return (maxX - minX);
     }
     IEnumerator IEnumerable.GetEnumerator() => new CoordsEnumerator(pathToModel);
