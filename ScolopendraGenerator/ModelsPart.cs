@@ -7,10 +7,11 @@ using static System.Console;
 
 public class ModelsPart : IEnumerable
 {
-    private string? pathToModel = null;
-    private uint? trisCount = null;
-    private float? lengthX = null;
-    private float? toZeroXCoeff = null;
+    private string pathToModel;
+    private uint trisCount;
+    private float lengthX;
+    private float toZeroXCoeff;
+    private float toZeroYCoeff;
     public ModelsPart(string path)
     {
         pathToModel = path;
@@ -18,27 +19,44 @@ public class ModelsPart : IEnumerable
         lengthX = getLengthX();
         WriteLine($"{PathToModel} contain {TrisCount} tris and have length {lengthX:N2} units(mm?)");
     }
-    public string? PathToModel
+    public string PathToModel
     {
         get
         {
             return pathToModel;
         }
     }
-    public uint? TrisCount
+    public uint TrisCount
     {
         get
         {
             return trisCount;
         }
     }
-    public float? LengthX
+    public float LengthX
     {
         get
         {
             return lengthX;
         }
     }
+
+    public float ToZeroXCoeff
+    {
+        get
+        {
+            return toZeroXCoeff;
+        }
+    }
+
+    public float ToZeroYCoeff
+    {
+        get
+        {
+            return toZeroYCoeff;
+        }
+    }
+
     private uint getTrisCount(string path)
     {
         uint trisCount = 0;
@@ -64,12 +82,16 @@ public class ModelsPart : IEnumerable
         bool startFlag = false;
         float minX = 0;
         float maxX = 0;
+        float minY = 0;
+        float maxY = 0;
         foreach (Coords coord in this)
         {
             if (startFlag)
             {
                 minX = coord.X;
                 maxX = coord.X;
+                minY = coord.Y;
+                maxY = coord.Y;
             }
             else
             {
@@ -81,10 +103,20 @@ public class ModelsPart : IEnumerable
                 {
                     maxX = coord.X;
                 }
+                if (coord.Y < minY)
+                {
+                    minY = coord.Y;
+                }
+                if (coord.Y > maxY)
+                {
+                    maxY = coord.Y;
+                }
             }
         }
         float centerX = minX + ((maxX - minX) / 2);
+        float centerY = minY + ((maxY - minY) / 2);
         toZeroXCoeff = 0 - centerX;
+        toZeroYCoeff = 0 - centerY;
         return (maxX - minX);
     }
     IEnumerator IEnumerable.GetEnumerator() => new CoordsEnumerator(pathToModel);
