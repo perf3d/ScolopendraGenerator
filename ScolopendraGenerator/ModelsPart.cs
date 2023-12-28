@@ -15,8 +15,15 @@ public class ModelsPart : IEnumerable
     public ModelsPart(string path)
     {
         pathToModel = path;
-        trisCount = getTrisCount(path);
-        lengthX = getLengthX();
+        try
+        {
+            trisCount = getTrisCount(path);
+            lengthX = getLengthX();
+        }
+        catch(Exception) 
+        {
+            throw;
+        }
         WriteLine($"{PathToModel} contain {TrisCount} tris and have length {lengthX:N2} units(mm?)");
     }
     public string PathToModel
@@ -74,7 +81,8 @@ public class ModelsPart : IEnumerable
         }
         else
         {
-            throw new Exception("invalid path");
+            WriteLine("Invalid path: " + path);
+            throw new Exception("invalid path: " + path);
         }
     }
     private float getLengthX()

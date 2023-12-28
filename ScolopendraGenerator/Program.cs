@@ -9,9 +9,20 @@ GenerateScolopendra();
 
 static void GenerateScolopendra()
 {
-    ModelsPart head = new("Parts/Head.stl");
-    ModelsPart mid = new("Parts/Midle.stl");
-    ModelsPart back = new("Parts/Tail.stl");
+    ModelsPart head;
+    ModelsPart mid;
+    ModelsPart back;
+    try
+    {
+        head = new("Parts/Head.stl");
+        mid = new("Parts/Midle.stl");
+        back = new("Parts/Tail.stl");
+    }
+    catch
+    {
+        return;
+    }
+    
     WriteLine("Insert middle segments count: ");
     uint countMiddleSegments = Convert.ToUInt32(ReadLine());
     uint totalTrisCount = head.TrisCount + (mid.TrisCount * countMiddleSegments) + back.TrisCount;
@@ -43,7 +54,9 @@ static void GenerateScolopendra()
     InstanceTriangles(back, newModelPath, backXCoef, delta: delta);
 
 
-
+    float totalLength = head.LengthX + ((mid.LengthX-delta)* countMiddleSegments) + (back.LengthX-delta);
+    WriteLine($"Total length: {totalLength:N2}mm");
+    ReadLine();
 }
 
 static void InstanceTriangles(ModelsPart model, string pathTo, float xPosition, uint countCopyes = 1, float delta = 0)
