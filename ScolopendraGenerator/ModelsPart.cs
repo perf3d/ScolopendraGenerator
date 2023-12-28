@@ -135,11 +135,11 @@ class CoordsEnumerator : IEnumerator
     FileInfo info;
     int position = startPosition;
     byte jumpCounter = 1;
-    public CoordsEnumerator(string? path)
+    public CoordsEnumerator(string path)
     {
         if (!File.Exists(path))
         {
-            throw new Exception("invalid path");
+            throw new Exception("invalid path:" + path);
         }
         info = new FileInfo(path);
     }
